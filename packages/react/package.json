@@ -1,6 +1,6 @@
 {
   "name": "@jadinec/react-sheet",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.esm.js",
@@ -19,14 +19,17 @@
   "dependencies": {
     "@jadinec/core-sheet": "^1.1.13",
     "@types/regenerator-runtime": "^0.13.6",
-    "antd": "^5.25.4",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
     "regenerator-runtime": "^0.14.1"
   },
   "peerDependencies": {
+    "antd": ">= 4.16.6",
     "react": ">= 18.2",
     "react-dom": ">= 18.2"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "1.13.8"
   },
   "keywords": [
     "spreadsheet",
