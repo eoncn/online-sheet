@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Sheet } from "@online-sheet/core";
-import { Workbook } from "@online-sheet/react";
+import { Sheet } from "@jadinec/core-sheet";
+import { Workbook } from "@jadinec/react-sheet";
 import cell from "./data/cell";
 import formula from "./data/formula";
 import empty from "./data/empty";
 import freeze from "./data/freeze";
 import dataVerification from "./data/dataVerification";
 import lockcellData from "./data/protected";
+import "@jadinec/react-sheet/dist/index.css";
 
 export default {
   component: Workbook,

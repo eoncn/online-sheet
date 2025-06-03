@@ -1,8 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Workbook, WorkbookInstance } from "@online-sheet/react";
-import { Sheet } from "@online-sheet/core";
+import { Workbook, WorkbookInstance } from "@jadinec/react-sheet";
+import { Sheet } from "@jadinec/core-sheet";
 import dataVerification from "./data/dataVerification";
+import "@jadinec/react-sheet/dist/index.css";
+// import "antd/es/select/style/index.css"; // 必须手动引入 CSS
 
 export default {
   component: Workbook,

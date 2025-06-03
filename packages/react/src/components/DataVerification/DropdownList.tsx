@@ -6,6 +6,7 @@ import {
   mergeBorder,
   setDropcownValue,
 } from "@jadinec/core-sheet";
+import { Select } from "antd";
 import React, {
   useCallback,
   useContext,
@@ -14,10 +15,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Select } from "antd";
 import WorkbookContext from "../../context";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import SVGIcon from "../SVGIcon";
 
 import "./index.css";
 
@@ -120,7 +119,9 @@ const DropDownList: React.FC<IDropDownListProps> = (
           value: item,
         };
       })}
+      mode={isMul ? "multiple" : undefined}
       open={open}
+      size="small"
       showSearch
       autoFocus
       allowClear
@@ -129,13 +130,18 @@ const DropDownList: React.FC<IDropDownListProps> = (
       onMouseDown={(e) => e.stopPropagation()}
       style={
         width
-          ? { ...position, width, zIndex: 1000, display: open ? "block" : "none" }
+          ? {
+              ...position,
+              width,
+              zIndex: 1000,
+              display: open ? "block" : "none",
+            }
           : { ...position, zIndex: 1000, display: open ? "block" : "none" }
       }
-      onChange={(v) => {
+      onSelect={(v: any) => {
         setContext((ctx) => {
           const arr = selected;
-          if (v.length === 0) return;
+          if (!v || (v as any).length === 0) return;
           const index = arr.indexOf(v);
           if (index < 0) {
             arr.push(v);
@@ -151,50 +157,50 @@ const DropDownList: React.FC<IDropDownListProps> = (
     />
   );
 
-  return (
-    <div
-      id="luckysheet-dataVerification-dropdown-List"
-      style={width ? { ...position, width } : { ...position }}
-      ref={containerRef}
-      onClick={(e) => e.stopPropagation()}
-      onChange={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.stopPropagation()}
-      onMouseUp={(e) => e.stopPropagation()}
-      tabIndex={0}
-    >
-      {showList.map((v, i) => (
-        <div
-          className="dropdown-List-item"
-          key={i}
-          onClick={() => {
-            setContext((ctx) => {
-              const arr = selected;
-              const index = arr.indexOf(v);
-              if (index < 0) {
-                arr.push(v);
-              } else {
-                arr.splice(index, 1);
-              }
-              setSelected(arr);
-              setDropcownValue(ctx, v, arr);
-              ctx.updateTime = Date.now().toString();
-            });
-          }}
-          tabIndex={0}
-        >
-          <SVGIcon
-            name="check"
-            width={12}
-            style={{
-              verticalAlign: "middle",
-              display: isMul && selected.indexOf(v) >= 0 ? "inline" : "none",
-            }}
-          />
-          {v}
-        </div>
-      ))}
-    </div>
-  );
+  // return (
+  //   <div
+  //     id="luckysheet-dataVerification-dropdown-List"
+  //     style={width ? { ...position, width } : { ...position }}
+  //     ref={containerRef}
+  //     onClick={(e) => e.stopPropagation()}
+  //     onChange={(e) => e.stopPropagation()}
+  //     onKeyDown={(e) => e.stopPropagation()}
+  //     onMouseDown={(e) => e.stopPropagation()}
+  //     onMouseUp={(e) => e.stopPropagation()}
+  //     tabIndex={0}
+  //   >
+  //     {showList.map((v, i) => (
+  //       <div
+  //         className="dropdown-List-item"
+  //         key={i}
+  //         onClick={() => {
+  //           setContext((ctx) => {
+  //             const arr = selected;
+  //             const index = arr.indexOf(v);
+  //             if (index < 0) {
+  //               arr.push(v);
+  //             } else {
+  //               arr.splice(index, 1);
+  //             }
+  //             setSelected(arr);
+  //             setDropcownValue(ctx, v, arr);
+  //             ctx.updateTime = Date.now().toString();
+  //           });
+  //         }}
+  //         tabIndex={0}
+  //       >
+  //         <SVGIcon
+  //           name="check"
+  //           width={12}
+  //           style={{
+  //             verticalAlign: "middle",
+  //             display: isMul && selected.indexOf(v) >= 0 ? "inline" : "none",
+  //           }}
+  //         />
+  //         {v}
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
 };
 export default DropDownList;

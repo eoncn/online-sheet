@@ -70,7 +70,9 @@
   "dependencies": {
     "react": ">= 18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "antd": "4.16.6",
+    "@jadinec/react-sheet": "^1.1.12"
   },
   "gitHooks": {
     "pre-commit": "npx yarn lint"

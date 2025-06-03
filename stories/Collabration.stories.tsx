@@ -6,10 +6,11 @@ import React, {
   useMemo,
 } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Sheet, Op, Selection, colors } from "@online-sheet/core";
-import { Workbook, WorkbookInstance } from "@online-sheet/react";
+import { Sheet, Op, Selection, colors } from "@jadinec/core-sheet";
+import { Workbook, WorkbookInstance } from "@jadinec/react-sheet";
 import { v4 as uuidv4 } from "uuid";
 import { hashCode } from "./utils";
+import "@jadinec/react-sheet/dist/index.css";
 
 export default {
   component: Workbook,
