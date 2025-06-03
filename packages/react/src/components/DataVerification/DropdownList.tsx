@@ -14,6 +14,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Select } from "antd";
 import WorkbookContext from "../../context";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import SVGIcon from "../SVGIcon";
@@ -34,6 +35,7 @@ const DropDownList: React.FC<IDropDownListProps> = (
   const [isMul, setIsMul] = useState<boolean>(false);
   const [position, setPosition] = useState<{ left: number; top: number }>();
   const [selected, setSelected] = useState<any[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const close = useCallback(() => {
     setContext((ctx) => {
@@ -82,6 +84,9 @@ const DropDownList: React.FC<IDropDownListProps> = (
       left: col_pre,
       top: row,
     });
+    setTimeout(() => {
+      setOpen(true);
+    }, 0);
     setIsMul(item.type2 === "true");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -107,6 +112,44 @@ const DropDownList: React.FC<IDropDownListProps> = (
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.luckysheetfile]);
+  return (
+    <Select
+      options={showList.map((item) => {
+        return {
+          label: item,
+          value: item,
+        };
+      })}
+      open={open}
+      showSearch
+      autoFocus
+      allowClear
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      style={
+        width
+          ? { ...position, width, zIndex: 1000, display: open ? "block" : "none" }
+          : { ...position, zIndex: 1000, display: open ? "block" : "none" }
+      }
+      onChange={(v) => {
+        setContext((ctx) => {
+          const arr = selected;
+          if (v.length === 0) return;
+          const index = arr.indexOf(v);
+          if (index < 0) {
+            arr.push(v);
+          } else {
+            arr.splice(index, 1);
+          }
+          setSelected(arr);
+          setDropcownValue(ctx, v, arr);
+          ctx.updateTime = Date.now().toString();
+        });
+        setOpen(false);
+      }}
+    />
+  );
 
   return (
     <div
