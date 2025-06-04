@@ -122,6 +122,9 @@ const DropDownList: React.FC<IDropDownListProps> = (
       mode={isMul ? "multiple" : undefined}
       open={open}
       size="small"
+      getPopupContainer={(res) => {
+        return res.parentNode as HTMLElement;
+      }}
       showSearch
       autoFocus
       allowClear
@@ -133,10 +136,10 @@ const DropDownList: React.FC<IDropDownListProps> = (
           ? {
               ...position,
               width,
-              zIndex: 17,
+              zIndex: 1,
               display: open ? "block" : "none",
             }
-          : { ...position, zIndex: 17, display: open ? "block" : "none" }
+          : { ...position, zIndex: 1, display: open ? "block" : "none" }
       }
       onSelect={(v: any) => {
         setContext((ctx) => {
