@@ -1,9 +1,9 @@
 {
   "name": "@jadinec/react-sheet",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "module": "dist/index.js",
+  "module": "dist/index.esm.js",
   "files": [
     "dist"
   ],
@@ -19,7 +19,7 @@
   "dependencies": {
     "@jadinec/core-sheet": "^1.1.13",
     "@types/regenerator-runtime": "^0.13.6",
-    "antd": "4.16.7",
+    "antd": "4.16.13",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
     "regenerator-runtime": "^0.14.1"
