@@ -133,10 +133,10 @@ const DropDownList: React.FC<IDropDownListProps> = (
           ? {
               ...position,
               width,
-              zIndex: 1000,
+              zIndex: 17,
               display: open ? "block" : "none",
             }
-          : { ...position, zIndex: 1000, display: open ? "block" : "none" }
+          : { ...position, zIndex: 17, display: open ? "block" : "none" }
       }
       onSelect={(v: any) => {
         setContext((ctx) => {
