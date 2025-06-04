@@ -119,7 +119,7 @@ const DropDownList: React.FC<IDropDownListProps> = (
           value: item,
         };
       })}
-      dropdownStyle={{ marginTop: "-4px" }}
+      dropdownStyle={{ marginTop: "-9px" }}
       mode={isMul ? "multiple" : undefined}
       open={open}
       size="small"
