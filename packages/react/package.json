@@ -1,6 +1,6 @@
 {
   "name": "@jadinec/react-sheet",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@jadinec/core-sheet": "^1.1.13",
     "@types/regenerator-runtime": "^0.13.6",
-    "antd": "5.25.4",
+    "antd": "4.16.7",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
     "regenerator-runtime": "^0.14.1"
