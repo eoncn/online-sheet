@@ -15,8 +15,8 @@
     "lib": ["es5", "dom"],
     "baseUrl": "./",
     "paths": {
-//      "@online-sheet/core": ["packages/core/src"],
-//      "@online-sheet/react": ["packages/react/src"]
+      "@jadinec/core-sheet": ["packages/core/src"],
+      "@jadinec/react-sheet": ["packages/react/src"]
     }
   },
   "include": ["packages/*/src", "stories/"],

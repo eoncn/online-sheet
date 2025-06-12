@@ -112,53 +112,54 @@ const DropDownList: React.FC<IDropDownListProps> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.luckysheetfile]);
   return (
-    <Select
-      options={showList.map((item) => {
-        return {
-          label: item,
-          value: item,
-        };
-      })}
-      dropdownStyle={{ marginTop: "-9px" }}
-      mode={isMul ? "multiple" : undefined}
-      open={open}
-      size="small"
-      getPopupContainer={(res) => {
-        return res.parentNode as HTMLElement;
-      }}
-      showSearch
-      autoFocus
-      allowClear
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.stopPropagation()}
-      style={
-        width
-          ? {
-              ...position,
-              width,
-              zIndex: 1,
-              display: open ? "block" : "none",
+    <div className="excel-dropdown-list">
+      <Select
+        options={showList.map((item) => {
+          return {
+            label: item,
+            value: item,
+          };
+        })}
+        mode={isMul ? "multiple" : undefined}
+        open={open}
+        size="small"
+        getPopupContainer={(res) => {
+          return res.parentNode as HTMLElement;
+        }}
+        showSearch
+        autoFocus
+        allowClear
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        style={
+          width
+            ? {
+                ...position,
+                width,
+                zIndex: 1,
+                display: open ? "block" : "none",
+              }
+            : { ...position, zIndex: 1, display: open ? "block" : "none" }
+        }
+        onSelect={(v: any) => {
+          setContext((ctx) => {
+            const arr = selected;
+            if (!v || (v as any).length === 0) return;
+            const index = arr.indexOf(v);
+            if (index < 0) {
+              arr.push(v);
+            } else {
+              arr.splice(index, 1);
             }
-          : { ...position, zIndex: 1, display: open ? "block" : "none" }
-      }
-      onSelect={(v: any) => {
-        setContext((ctx) => {
-          const arr = selected;
-          if (!v || (v as any).length === 0) return;
-          const index = arr.indexOf(v);
-          if (index < 0) {
-            arr.push(v);
-          } else {
-            arr.splice(index, 1);
-          }
-          setSelected(arr);
-          setDropcownValue(ctx, v, arr);
-          ctx.updateTime = Date.now().toString();
-        });
-        setOpen(false);
-      }}
-    />
+            setSelected(arr);
+            setDropcownValue(ctx, v, arr);
+            ctx.updateTime = Date.now().toString();
+          });
+          setOpen(false);
+        }}
+      />
+    </div>
   );
 
   // return (
