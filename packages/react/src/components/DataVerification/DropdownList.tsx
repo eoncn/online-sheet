@@ -112,7 +112,14 @@ const DropDownList: React.FC<IDropDownListProps> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.luckysheetfile]);
   return (
-    <div className="excel-dropdown-list">
+    <div
+      className="excel-dropdown-list"
+      // 阻止所有事件冒泡和默认行为
+      onWheel={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <Select
         options={showList.map((item) => {
           return {
