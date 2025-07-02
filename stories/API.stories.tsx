@@ -56,22 +56,31 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
   return (
     <ApiExecContainer
       onRun={() => {
-        return ref.current?.getCellValue(0, 0);
+        ref.current?.setCellOptions(1, 0, [
+          { label: "v1", value: "fortune1" },
+          { label: "m2", value: "fortune2" },
+          { label: "bg", value: "green3" },
+          { label: "ct", value: "123444" },
+          { label: "qp", value: "fortune5" },
+          { label: "spl", value: "fortune6" },
+          { label: "lo", value: "fortune7" },
+          { label: "rt", value: "fortune8" },
+          { label: "ps", value: "fortune9" },
+          { label: "hl", value: "fortune10" },
+          { label: "2", value: "33333" },
+        ]);
       }}
     >
       <Workbook
         ref={ref}
         data={data}
         onChange={onChange}
-        cellEditable={(row, column) => {
-          // 只允许编辑第0行第0列
-          return row === 0 && column === 0;
-        }}
+        // cellEditable={(row, column) => {
+        //   // 只允许编辑第0行第0列
+        //   return row === 0 && column === 0;
+        // }}
         selectClick={(row, column) => {
           console.log("selectClick", row, column);
-          if (column === 0) {
-            return Promise.resolve([]);
-          }
           const ret = [
             {
               label: "a",
@@ -121,16 +130,19 @@ export const SetCellValue: StoryFn<typeof Workbook> = () => {
   return (
     <ApiExecContainer
       onRun={() => {
-        for (let i = 0; i < 5; i += 1) {
-          for (let j = 0; j < 5; j += 1) {
-            ref.current?.setCellValue(i, j, `${i + j}`);
-          }
-        }
-        ref.current?.setCellValue(0, 5, "=SUM(A1:E1)");
-        ref.current?.setCellValue(1, 5, "=SUM(A2:E2)");
-        ref.current?.setCellValue(2, 5, "=SUM(A3:E3)");
-        ref.current?.setCellValue(3, 5, "=SUM(A4:E4)");
-        ref.current?.setCellValue(4, 5, "=SUM(A5:E5)");
+        ref.current?.setCellOptions(0, 1, [
+          { label: "v1", value: "fortune1" },
+          { label: "m2", value: "fortune2" },
+          { label: "bg", value: "green3" },
+          { label: "ct", value: "123444" },
+          { label: "qp", value: "fortune5" },
+          { label: "spl", value: "fortune6" },
+          { label: "lo", value: "fortune7" },
+          { label: "rt", value: "fortune8" },
+          { label: "ps", value: "fortune9" },
+          { label: "hl", value: "fortune10" },
+          { label: "2", value: "33333" },
+        ]);
       }}
     >
       <Workbook ref={ref} data={data} onChange={onChange} />
