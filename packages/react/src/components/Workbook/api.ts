@@ -127,22 +127,26 @@ export function generateAPIs(
     setCellOptions: (
       row: number,
       column: number,
-      options: { label: string; value: string; extra?: any }[]
+      list: { label: string; value: string; extra?: any }[],
+      options: api.CommonOptions & { type?: keyof Cell } = {}
     ) => {
-      setContext(async (ctx) => {
-        console.log("setCellOptions", row, column, options);
-        // 获取原来的下拉列表
-        const i = getSheetIndex(ctx, ctx.currentSheetId) as number;
-        const { dataVerification: verification } = ctx.luckysheetfile[i];
-        const cellItem = verification[`${row}_${column}`];
-        cellItem.value1 = options.map((child) => child.label).join(",");
-        try {
-          cellItem.value2 = JSON.stringify(options);
-        } catch (e) {
-          console.error("JSON.stringify error", e);
-          cellItem.value2 = "[]";
-        }
-      });
+      setContext((draftCtx) =>
+        api.setCellOptions(draftCtx, row, column, list, options)
+      );
+      // setContext(async (ctx) => {
+      //   console.log("setCellOptions", row, column, options);
+      //   // 获取原来的下拉列表
+      //   const i = getSheetIndex(ctx, ctx.currentSheetId) as number;
+      //   const { dataVerification: verification } = ctx.luckysheetfile[i];
+      //   const cellItem = verification[`${row}_${column}`];
+      //   cellItem.value1 = options.map((child) => child.label).join(",");
+      //   try {
+      //     cellItem.value2 = JSON.stringify(options);
+      //   } catch (e) {
+      //     console.error("JSON.stringify error", e);
+      //     cellItem.value2 = "[]";
+      //   }
+      // });
     },
 
     clearCell: (row: number, column: number, options: api.CommonOptions = {}) =>

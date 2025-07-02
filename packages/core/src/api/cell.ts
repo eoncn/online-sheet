@@ -16,6 +16,30 @@ import { SHEET_NOT_FOUND } from "./errors";
 // @ts-ignore
 import SSF from "../modules/ssf";
 
+export function setCellOptions(
+  ctx: Context,
+  row: number,
+  column: number,
+  list: { label: string; value: string; extra?: any }[],
+  options: CommonOptions & { type?: keyof Cell } = {}
+) {
+  if (!_.isNumber(row) || !_.isNumber(column)) {
+    throw new Error("row or column cannot be null or undefined");
+  }
+  const sheet = getSheet(ctx, options);
+  // 获取原来的下拉列表
+  const verification = sheet.dataVerification;
+  // const { dataVerification: verification } = ctx.luckysheetfile[i];
+  const cellItem = verification[`${row}_${column}`];
+  cellItem.value1 = list.map((child) => child.label).join(",");
+  try {
+    cellItem.value2 = JSON.stringify(options);
+  } catch (e) {
+    console.error("JSON.stringify error", e);
+    cellItem.value2 = "[]";
+  }
+}
+
 export function getCellValue(
   ctx: Context,
   row: number,
