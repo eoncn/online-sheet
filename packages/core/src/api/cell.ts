@@ -33,7 +33,7 @@ export function setCellOptions(
   const cellItem = verification[`${row}_${column}`];
   cellItem.value1 = list.map((child) => child.label).join(",");
   try {
-    cellItem.value2 = JSON.stringify(options);
+    cellItem.value2 = JSON.stringify(list);
   } catch (e) {
     console.error("JSON.stringify error", e);
     cellItem.value2 = "[]";
