@@ -32,10 +32,10 @@ const columns = [
     dataIndex: 'materialName',
     valueType: 'select',
     fieldProps: {
-      showInExcel: true, // 是否在表格中显示
-      required: true, // 是否必填
+      showInExcel: true, // 是否在表格中显示，默认false
+      required: true, // 全列是否必填，可通过`skipRequiredCheck`排除指定的行为非必填。
       excelWidth: 150, // 列宽
-      editDisable: false, // 是否禁止编辑
+      editDisable: false, // 是否禁止编辑，默认false
       // 下拉选择相关
       options: [], // 静态下拉选项，selectCallBack可异步获取，这里设置为[]
       selectCallBack: async (rowData) => {
@@ -43,11 +43,11 @@ const columns = [
        return []; // 返回格式: [{label, value, extra?}]
       },
       selectedIdKey: 'materialId', // 选中后设置到行数据的字段（用于存储value）
-      selectedOtherKeys: ['unit'], // 选中后从extra中提取并设置到行数据的字段
+      selectedOtherKeys: ['unit'], // 选中后从extra对像中提取并设置到行数据的字段
       clearRelationKeys: ['specification'], // 当下拉选择后需要清空的字段
-      useInputValue: true, // 是否将输入的值作为下拉选项（允许用户输入）
-      decimalNum: 2, // 小数位数（用于校验）
-      isBigint: true, // 是否为整数（用于校验）
+      useInputValue: true, // 是否将输入的值作为下拉选项(允许用户输入)，默认值false
+      decimalNum: 2, // 小数位数（用于校验），设置为0时表示整数
+      isBigint: true, // 是否为数字（用于校验）
       // 其他配置...
     }
   },
@@ -83,6 +83,7 @@ function App() {
         return false; // 默认不跳过
       }}
       otherList={}  // 新版本不用设置otherList了
+      // 其他配置...
     />
   );
 }
