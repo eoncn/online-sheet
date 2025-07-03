@@ -807,6 +807,21 @@ export function handleGlobalKeyDown(
   }
   if (kstr === "Enter") {
     if (!allowEdit) return;
+    const last =
+      ctx.luckysheet_select_save![ctx.luckysheet_select_save!.length - 1];
+
+    const row_index = last.row_focus;
+    const col_index = last.column_focus;
+    // 检查当前单元格是否可以编辑
+    if (
+      col_index !== undefined &&
+      row_index !== undefined &&
+      ctx.cellEditable
+    ) {
+      if (!ctx.cellEditable(row_index, col_index)) {
+        return;
+      }
+    }
     handleGlobalEnter(ctx, cellInput, e, canvas);
   } else if (kstr === "Tab") {
     if (ctx.luckysheetCellUpdate.length > 0) {
@@ -926,6 +941,16 @@ export function handleGlobalKeyDown(
 
         const row_index = last.row_focus;
         const col_index = last.column_focus;
+        // 检查当前单元格是否可以编辑
+        if (
+          col_index !== undefined &&
+          row_index !== undefined &&
+          ctx.cellEditable
+        ) {
+          if (!ctx.cellEditable(row_index, col_index)) {
+            return;
+          }
+        }
 
         ctx.luckysheetCellUpdate = [row_index, col_index];
         cache.overwriteCell = true;

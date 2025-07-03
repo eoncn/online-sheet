@@ -75,10 +75,10 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
         ref={ref}
         data={data}
         onChange={onChange}
-        // cellEditable={(row, column) => {
-        //   // 只允许编辑第0行第0列
-        //   return row === 0 && column === 0;
-        // }}
+        cellEditable={(row, column) => {
+          // 只允许编辑第0行第0列
+          return row === 0 && column === 0;
+        }}
         selectClick={(row, column) => {
           console.log("selectClick", row, column);
           const ret = [

@@ -1280,8 +1280,6 @@ export function handleCellAreaDoubleClick(
 
   // 检查当前单元格是否可以编辑
   if (ctx.cellEditable) {
-    // eslint-disable-next-line no-console
-    console.log("checking cell editability", row_index, col_index);
     if (!ctx.cellEditable(row_index, col_index)) {
       return;
     }
