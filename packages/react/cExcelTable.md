@@ -1,14 +1,28 @@
 # CExcelTable 使用文档
+
 ## 概述
-CExcelTable是一个基于`@jadinec/react-sheet`的Excel风格表格组件，支持数据编辑、下拉选择、数据联动、数据校验等功能。适用于需要复杂表格编辑的场景。
-## 功能特点
-1. 支持Excel风格的编辑操作（复制、插入行、删除行等）
-2. 支持下拉选择框（支持异步加载选项）
-3. 支持单元格数据联动（一个单元格变化自动更新其他单元格）
-4. 支持数据校验（必填项、数字格式、小数位数等）
-5. 支持数据保存与回调
-6. 支持合并表头
+`CExcelTable` 是一个基于 `@jadinec/react-sheet` 的类 Excel 表格组件，提供类似 Excel 的编辑体验。它支持复杂的数据编辑场景，包括数据联动、下拉选择、数据校验等功能。
+
+## 主要特性
+1. **Excel 风格的编辑体验**
+   - 单元格编辑
+   - 复制/粘贴
+   - 插入/删除行
+   - 列宽调整
+
+2. **高级功能**
+   - 下拉选择（支持异步加载选项）
+   - 数据联动（字段变化自动更新相关字段）
+   - 数据校验（必填项、数字格式、小数位数）
+   - 错误高亮显示
+
+3. **自定义扩展**
+   - 自定义单元格编辑权限
+   - 自定义保存逻辑
+   - 自定义联动规则
+
 ## 使用示例
+
 ### 基本使用
 ```jsx
 import CExcelTable from './CExcelTable';
@@ -18,13 +32,22 @@ const columns = [
     dataIndex: 'materialName',
     valueType: 'select',
     fieldProps: {
-      showInExcel: true,
-      required: true,
-      options: [], // 静态下拉选项,selectCallBack可异步获取，这里设置为[]
+      showInExcel: true, // 是否在表格中显示
+      required: true, // 是否必填
+      excelWidth: 150, // 列宽
+      editDisable: false, // 是否禁止编辑
+      // 下拉选择相关
+      options: [], // 静态下拉选项，selectCallBack可异步获取，这里设置为[]
       selectCallBack: async (rowData) => {
-          // 异步获取下拉选项，rowData为当前行数据
-          return []; // 返回格式: [{label, value, extra?}]
+       // 异步获取下拉选项，rowData为当前行数据
+       return []; // 返回格式: [{label, value, extra?}]
       },
+      selectedIdKey: 'materialId', // 选中后设置到行数据的字段（用于存储value）
+      selectedOtherKeys: ['unit'], // 选中后从extra中提取并设置到行数据的字段
+      clearRelationKeys: ['specification'], // 当下拉选择后需要清空的字段
+      useInputValue: true, // 是否将输入的值作为下拉选项（允许用户输入）
+      decimalNum: 2, // 小数位数（用于校验）
+      isBigint: true, // 是否为整数（用于校验）
       // 其他配置...
     }
   },
@@ -42,9 +65,23 @@ function App() {
   };
   return (
     <CExcelTable
-      columns={columns}
+      supportDependencyCallBack
+      columns={columns} // 表格列配置，主要联动在这里配置
       dataSource={dataSource}
       onSave={handleSave}
+      dependencyOrderKeys={['materialName']} // 多个单元格的key同时被修改时，按依赖顺序的字段名数组的先后顺序触发联动
+      cellEditable={(row: number, column: number) => {
+        // 控制单元格是否可编辑
+        return true; // 默认所有单元格可编辑
+      }}
+      onEditRow={(key: string, data: any, isBat: boolean):Record<string, any> => {
+        // 自定义单元格数据编辑后逻辑，data中的数据修改后会更新到表格中
+        return data; // 返回修改后的行数据
+      }}
+      skipRequiredCheck={(key: string, data: any):boolean => {
+        // 跳过必填项检查(小概率会用到该函数)
+        return false; // 默认不跳过
+      }}
       otherList={}  // 新版本不用设置otherList了
     />
   );
