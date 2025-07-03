@@ -810,7 +810,7 @@ const SheetOverlay: React.FC = () => {
           <ImgBoxs />
           <div
             id="luckysheet-dataVerification-dropdown-btn"
-            onClick={async () => {
+            onClick={async (e) => {
               if (!context.luckysheet_select_save) return;
               // 获取当前选中的单元格的宽度,下拉列表要跟单元格保持一致
               const last =
@@ -825,6 +825,19 @@ const SheetOverlay: React.FC = () => {
                 row_focus: rowIndex,
                 column_focus: colIndex,
               } = last;
+
+              // 检查当前单元格是否可以编辑
+              if (
+                context.cellEditable &&
+                colIndex !== undefined &&
+                rowIndex !== undefined
+              ) {
+                if (!context.cellEditable(rowIndex, colIndex)) {
+                  e.preventDefault();
+                  return;
+                }
+              }
+
               setListWidth(width);
               // 获取当前选中的单元格的行列索引
               // eslint-disable-next-line no-console
