@@ -135,7 +135,7 @@ function App() {
   }
 }
 ```
-### 事件回调
+## 事件回调
 1. **onSave**：保存数据时触发
     - 参数：修改后的数据列表（新增、修改、删除后的数据）
     - 返回Promise，可以返回错误信息（格式：`{ msg: string }` 或 `{ msg: Array<{id, msg}> }`），用于标记错误行
@@ -146,19 +146,73 @@ function App() {
     - 返回值：返回修改后的行数据（用于更新）
 4. **onDeleteRow**：行删除时触发
     - 参数：被删除行的id
-### 数据校验
-组件内置了以下校验：
-1. **必填项校验**：配置`fieldProps.required=true`的列，在保存时会检查是否填写。
-2. **桩号格式校验**：如果列标题为“开始桩号”或“结束桩号”，则校验格式（正则：`/^([0-9A-Z]{0,5}[A-Z])([0-9]{1,8})\+(([0-9]{3})(\.[0-9]{1,3})?)$/`）。
-3. **数字格式校验**：配置`fieldProps.isBigint=true`的列，会校验是否为数字。
-4. **小数位数校验**：配置`fieldProps.decimalNum`的列，会校验小数位数。
-   校验不通过时，会在对应单元格显示红色边框，并弹出错误提示。
-### 注意事项
-1. **数据源要求**：每行数据必须包含`id`字段（新增数据可使用临时id，如`'new'+Guid`）。
-2. **异步下拉选项**：如果需要异步加载下拉选项，在列配置中设置`selectCallBack`函数，该函数返回一个选项数组或Promise。
-3. **联动处理**：当需要根据一个字段的值改变其他字段时，使用`selectedIdKey`，`selectedOtherKeys`和`clearRelationKeys`配置使用。如果配置不出来，请配合使用`onEditRow`回调。
-4. **依赖顺序**：当多个字段联动有顺序要求时，使用`dependencyOrderKeys`指定顺序，主要用于同时粘贴一行的多个字段时，触发需要有先后顺序。
-5. **性能**：表格在数据量大时可能会有性能问题，建议分页或虚拟滚动（当前代码未实现，可自行扩展）。
+
+## 数据校验
+
+### 校验规则
+
+- 必填项校验：
+
+  ```js
+  fieldProps: { required: true }
+  ```
+
+- 数字格式校验：
+
+  ```js
+  fieldProps: { isBigint: true }
+  ```
+
+- 小数位数校验：
+
+  ```js
+  fieldProps: { decimalNum: 2 }
+  ```
+
+- 桩号格式校验：
+
+  自动应用于 “开始桩号” 和 “结束桩号” 列  
+  校验不通过时，对应单元格会显示红色边框。
+
+---
+## 注意事项
+### 数据源要求
+
+- 每行数据必须包含 `id` 字段
+
+- 新增数据可使用临时 `id`（如 `'new' + Guid()`）
+
+### 下拉选项
+
+- 异步选项通过 `selectCallBack` 实现
+
+- 选项格式：
+
+  ```js
+  [{ label, value, extra? }]
+  ```
+
+### 性能优化
+
+- 避免在每次渲染时创建新的 `columns` 或 `dataSource`
+
+- 大数据量时考虑分页或虚拟滚动
+
+### 错误处理
+
+- 保存时返回错误格式：
+
+  ```js
+  { msg: string }
+  
+  // 或
+  
+  { msg: Array<{ id, msg }> }
+  ```
+
+- 错误行会自动高亮显示
+
+---
 ## 高级用法
 ### 复杂联动示例
 例如：选择“单位工程”后，需要清空“工程类型”并重新加载其选项，同时可能影响其他字段。
@@ -189,12 +243,13 @@ function App() {
     options: engineeringTypeOptions,
     selectCallBack: (rowData) => {
       // 根据单位工程ID过滤选项
-      return engineeringTypeOptions.filter(opt => 
-        opt.extra.unitId === rowData.unitEngineeringId
-      );
+      return engineeringTypeOptions.filter(opt => {
+          // 只显示与当前单位工程相关的工程类型，按单位工程的extra.engineeringCategate过滤
+          return opt.extra.includes(rowData.engineeringCategate);
+      });
     },
-    // 允许选择输入值，这里用户输入于单元格的数据会出现在下拉选项中，可以选择
-    useInputValue: true
+    // 不允许非列表中的输入值，用户输入的值与列表中的完全匹配才有效。
+    useInputValue: false
   }
 }
 ```
@@ -205,17 +260,56 @@ function App() {
   // ...其他属性
 />
 ```
+## 样式定制
+
+可通过修改以下 CSS 文件定制样式：
+
+- `index.css`：组件主要样式
+
+- `@jadinec/react-sheet/dist/index.css`：基础表格样式
+
+---
+
 ## 常见问题
-1. **下拉选项不更新**：确保`selectCallBack`函数正确返回，并且使用了`selectedOtherKeys`等配置将需要的数据存入行数据，以便其他下拉选项可以依赖这些数据。
-2. **数据保存时校验不通过**：检查错误提示，修改对应单元格的数据格式。注意必填项、数字格式和桩号格式。
-3. **无法删除行**：检查是否设置了`hiddenDelete=true`，或者右键菜单中“删除行”是否被禁用。
-4. **联动未触发**：检查`supportDependencyCallBack`是否设置为true，以及`onEditRow`回调是否正确处理了数据更新。
-## 内部方法说明
-- `initTableData`：初始化表格数据，设置下拉选项等。
-- `handleChange`：处理表格数据变化，触发联动。
-- `handleSave`：处理保存逻辑，执行校验并调用`onSave`。
-- `updateTableData`：更新单个单元格的数据。
-- `updateSelectOption`：更新下拉选项。
-## 样式
-组件自带样式文件`index.css`，可根据需要调整。
+
+**Q: 下拉选项不更新怎么办？**
+
+A: 确保在 `options` 或 `selectCallBack`至少一处提供最新的选项数据，并详细检查 `selectCallBack` 是否正确实现。
+
+**Q: 如何实现自定义保存逻辑？**
+
+A: 使用 `onSave` 属性传入自定义保存函数，该函数应返回 Promise。
+
+**Q: 如何控制单元格编辑权限？**
+
+A: 使用 `cellEditable` 属性：
+
+```jsx
+cellEditable={(row, column) => {
+  // 返回 true/false 控制是否可编辑
+}}
+```
+
+---
+
+## 源码说明
+
+### 主要文件结构
+
+- `CExcelTable.tsx`：组件主文件
+
+- `index.css`：组件样式
+
+- `fn.ts`：工具函数
+
+### 核心功能模块
+
+- 数据初始化：`initTableData()`
+
+- 数据联动：`onEditRowBefore()`
+
+- 变更处理：`handleChange()`
+
+- 保存校验：`handleSave()`
+
 ---
