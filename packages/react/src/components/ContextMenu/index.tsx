@@ -295,9 +295,13 @@ const ContextMenu: React.FC = () => {
           selection?.row_select && (
             <Menu
               key="delete-row"
-              onClick={() => {
+              onClick={async () => {
                 if (!selection) return;
                 const [st_index, ed_index] = selection.row;
+                if (context?.beforeDeleteRow) {
+                  const res = await context.beforeDeleteRow(st_index, ed_index);
+                  if (!res) return;
+                }
                 const deleteRowColOp: SetContextOptions["deleteRowColOp"] = {
                   type: "row",
                   start: st_index,

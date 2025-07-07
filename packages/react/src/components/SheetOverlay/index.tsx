@@ -891,8 +891,8 @@ const SheetOverlay: React.FC = () => {
                 cellItem.value1 = list.map((child) => child.label).join(",");
                 try {
                   cellItem.value2 = JSON.stringify(list);
-                } catch (e) {
-                  console.error("JSON.stringify error", e);
+                } catch (e1) {
+                  console.error("JSON.stringify error", e1);
                   cellItem.value2 = "[]";
                 }
                 ctx.dataVerificationDropDownList = true;

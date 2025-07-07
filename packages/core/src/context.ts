@@ -230,6 +230,8 @@ export type Context = {
   ) => Promise<{ label: string; value: string }[]>;
   // 单元格是否可编辑回调事件
   cellEditable?: (row: number, column: number) => boolean;
+  // 删除行前要求的回调事件
+  beforeDeleteRow?: (beginRow: number, endRow: number) => Promise<boolean>;
 };
 
 export function defaultContext(refs: RefValues): Context {

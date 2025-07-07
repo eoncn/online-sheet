@@ -64,6 +64,7 @@ type AdditionalProps = {
     column: number
   ) => Promise<{ label: string; value: string }[]>;
   cellEditable?: (row: number, column: number) => boolean;
+  beforeDeleteRow?: (beginRow: number, endRow: number) => Promise<boolean>;
 };
 
 const triggerGroupValuesRefresh = (ctx: Context) => {
@@ -82,7 +83,15 @@ const concatProducer = (...producers: ((ctx: Context) => void)[]) => {
 
 const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
   (
-    { onChange, onOp, selectClick, cellEditable, data: originalData, ...props },
+    {
+      onChange,
+      onOp,
+      selectClick,
+      cellEditable,
+      data: originalData,
+      beforeDeleteRow,
+      ...props
+    },
     ref
   ) => {
     const globalCache = useRef<GlobalCache>({ undoList: [], redoList: [] });
@@ -473,6 +482,14 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
         });
       }
     }, [cellEditable, setContextWithProduce]);
+
+    useEffect(() => {
+      if (beforeDeleteRow) {
+        setContextWithProduce((draftCtx) => {
+          draftCtx.beforeDeleteRow = beforeDeleteRow;
+        });
+      }
+    }, [beforeDeleteRow, setContextWithProduce]);
 
     useEffect(() => {
       setContextWithProduce(
