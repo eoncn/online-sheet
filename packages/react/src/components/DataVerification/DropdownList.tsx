@@ -11,7 +11,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -43,13 +42,6 @@ const DropDownList: React.FC<IDropDownListProps> = (
   }, [setContext]);
 
   useOutsideClick(containerRef, close, [close]);
-
-  const showList = useMemo(() => {
-    if (context.editValue) {
-      return [...list].filter((el) => el.includes(context.editValue!));
-    }
-    return list;
-  }, [context.editValue, list]);
 
   // 初始化
   useEffect(() => {
@@ -121,7 +113,7 @@ const DropDownList: React.FC<IDropDownListProps> = (
       }}
     >
       <Select
-        options={showList.map((item) => {
+        options={list.map((item) => {
           return {
             label: item,
             value: item,
