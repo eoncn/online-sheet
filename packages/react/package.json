@@ -1,6 +1,6 @@
 {
   "name": "@jadinec/react-sheet",
-  "version": "1.1.32",
+  "version": "1.1.33",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.esm.js",
@@ -16,7 +16,7 @@
     "publish1": "npm publish --registry 'https://registry.npmjs.org' --access public"
   },
   "dependencies": {
-    "@jadinec/core-sheet": "^1.1.19",
+    "@jadinec/core-sheet": "^1.1.20",
     "@types/regenerator-runtime": "^0.13.6",
     "antd": "4.16.13",
     "immer": "^9.0.12",
