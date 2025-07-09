@@ -892,6 +892,31 @@ export function handleGlobalKeyDown(
       kstr.toLowerCase() === "backspace"
     ) {
       if (!allowEdit) return;
+      // 获取选中的单元格位置，并判定是否可以写
+      if (ctx.luckysheet_select_save) {
+        const range =
+          ctx.luckysheet_select_save[ctx.luckysheet_select_save.length - 1];
+        const minRow = range.row[0];
+        const maxRow = range.row[1];
+        const minColumn = range.column[0];
+        const maxColumn = range.column[1];
+        // 检查选中范围内的单元格是否可以编辑
+        if (
+          minRow !== undefined &&
+          maxRow !== undefined &&
+          minColumn !== undefined &&
+          maxColumn !== undefined &&
+          ctx.cellEditable
+        ) {
+          for (let r = minRow; r <= maxRow; r += 1) {
+            for (let c = minColumn; c <= maxColumn; c += 1) {
+              if (!ctx.cellEditable(r, c)) {
+                return;
+              }
+            }
+          }
+        }
+      }
       if (ctx.activeImg != null) {
         removeActiveImage(ctx);
       } else {
@@ -925,9 +950,11 @@ export function handleGlobalKeyDown(
       kcode === 32 ||
       kcode === 46 ||
       kcode === 0 ||
-      (e.ctrlKey && kcode === 86)
+      (e.ctrlKey && kcode === 86) ||
+      (e.ctrlKey && kcode === 118)
     ) {
       if (!allowEdit) return;
+      console.log("handleGlobalKeyDown", kcode, kstr);
       if (
         String.fromCharCode(kcode) != null &&
         !_.isEmpty(ctx.luckysheet_select_save) && // $("#luckysheet-cell-selected").is(":visible") &&
@@ -941,6 +968,7 @@ export function handleGlobalKeyDown(
 
         const row_index = last.row_focus;
         const col_index = last.column_focus;
+
         // 检查当前单元格是否可以编辑
         if (
           col_index !== undefined &&

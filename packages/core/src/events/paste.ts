@@ -1540,6 +1540,32 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
   const allowEdit = isAllowEdit(ctx);
   if (!allowEdit) return;
 
+  // 获取选中的单元格位置，并判定是否可以写
+  if (ctx.luckysheet_select_save) {
+    const range =
+      ctx.luckysheet_select_save[ctx.luckysheet_select_save.length - 1];
+    const minRow = range.row[0];
+    const maxRow = range.row[1];
+    const minColumn = range.column[0];
+    const maxColumn = range.column[1];
+    // 检查选中范围内的单元格是否可以编辑
+    if (
+      minRow !== undefined &&
+      maxRow !== undefined &&
+      minColumn !== undefined &&
+      maxColumn !== undefined &&
+      ctx.cellEditable
+    ) {
+      for (let r = minRow; r <= maxRow; r += 1) {
+        for (let c = minColumn; c <= maxColumn; c += 1) {
+          if (!ctx.cellEditable(r, c)) {
+            return;
+          }
+        }
+      }
+    }
+  }
+
   if (selectionCache.isPasteAction) {
     ctx.luckysheetCellUpdate = [];
     // $("#luckysheet-rich-text-editor").blur();
@@ -2043,6 +2069,32 @@ export function handlePasteByClick(
 ) {
   const allowEdit = isAllowEdit(ctx);
   if (!allowEdit) return;
+
+  // 获取选中的单元格位置，并判定是否可以写
+  if (ctx.luckysheet_select_save) {
+    const range =
+      ctx.luckysheet_select_save[ctx.luckysheet_select_save.length - 1];
+    const minRow = range.row[0];
+    const maxRow = range.row[1];
+    const minColumn = range.column[0];
+    const maxColumn = range.column[1];
+    // 检查选中范围内的单元格是否可以编辑
+    if (
+      minRow !== undefined &&
+      maxRow !== undefined &&
+      minColumn !== undefined &&
+      maxColumn !== undefined &&
+      ctx.cellEditable
+    ) {
+      for (let r = minRow; r <= maxRow; r += 1) {
+        for (let c = minColumn; c <= maxColumn; c += 1) {
+          if (!ctx.cellEditable(r, c)) {
+            return;
+          }
+        }
+      }
+    }
+  }
 
   if (clipboardData) clipboard.writeHtml(clipboardData);
 
