@@ -85,10 +85,10 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
         }}
         selectClick={(row, column) => {
           console.log("selectClick", row, column);
-          const ret = [];
-          for (let i = 0; i < 25000; i++) {
+          const ret: { lable: string; value: string }[] = [];
+          for (let i = 0; i < 25000; i = i + 1) {
             ret.push({
-              label: "这是一个测试数据" + i,
+              label: `这是一个测试数据${i}`,
               value: `option-${i}`,
             });
           }
