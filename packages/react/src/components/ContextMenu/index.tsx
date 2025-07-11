@@ -300,7 +300,12 @@ const ContextMenu: React.FC = () => {
                 const [st_index, ed_index] = selection.row;
                 if (context?.beforeDeleteRow) {
                   const res = await context.beforeDeleteRow(st_index, ed_index);
-                  if (!res) return;
+                  if (!res) {
+                    setContext((draftCtx) => {
+                      draftCtx.contextMenu = {};
+                    });
+                    return;
+                  }
                 }
                 const deleteRowColOp: SetContextOptions["deleteRowColOp"] = {
                   type: "row",
