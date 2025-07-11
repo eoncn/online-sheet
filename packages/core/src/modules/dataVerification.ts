@@ -156,28 +156,28 @@ export function validateCellData(ctx: Context, item: any, cellValue: any) {
   let { value1, value2 } = item;
   const { type, type2 } = item;
   if (type === "dropdown") {
-    const list = getDropdownList(ctx, value1);
+    // const list = getDropdownList(ctx, value1);
+    //
+    // // 多选的情况 检查每个都在下拉列表中
+    // if (type2 && cellValue) {
+    //   return cellValue
+    //     .toString()
+    //     .split(",")
+    //     .every((i: any) => {
+    //       return list.indexOf(i) !== -1;
+    //     });
+    // }
+    //
+    // let result = false;
+    //
+    // for (let i = 0; i < list.length; i += 1) {
+    //   if (list[i] === cellValue) {
+    //     result = true;
+    //     break;
+    //   }
+    // }
 
-    // 多选的情况 检查每个都在下拉列表中
-    if (type2 && cellValue) {
-      return cellValue
-        .toString()
-        .split(",")
-        .every((i: any) => {
-          return list.indexOf(i) !== -1;
-        });
-    }
-
-    let result = false;
-
-    for (let i = 0; i < list.length; i += 1) {
-      if (list[i] === cellValue) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
+    return true;
   }
   if (type === "checkbox") {
   } else if (
