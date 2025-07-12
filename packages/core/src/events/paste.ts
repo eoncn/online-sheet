@@ -16,7 +16,6 @@ import { hasPartMC, isRealNum } from "../modules/validation";
 import { getBorderInfoCompute } from "../modules/border";
 import { expandRowsAndColumns, storeSheetParamALL } from "../modules/sheet";
 import { jfrefreshgrid } from "../modules/refresh";
-import { setRowHeight } from "../api";
 import { CFSplitRange } from "../modules";
 import clipboard from "../modules/clipboard";
 import { setFormulaCellInfo } from "../modules/formulaHelper";
