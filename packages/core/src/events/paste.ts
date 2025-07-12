@@ -1891,7 +1891,8 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
               }
 
               if (_.isNil(data[r][c])) {
-                data[r][c] = cell;
+                // console.log("luckysheet-paste", r, c, cell);
+                data[r][c] = { v: cell.v, m: cell.m, fc: "windowtext", fs: 10 };
                 // @ts-ignore
                 let rowspan = parseInt(td.getAttribute("rowspan"), 10);
                 // @ts-ignore
@@ -2020,7 +2021,7 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
 
             r += 1;
           });
-          setRowHeight(ctx, rowHeightList);
+          // setRowHeight(ctx, rowHeightList);
         }
 
         ctx.luckysheet_selection_range = [];

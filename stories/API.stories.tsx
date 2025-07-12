@@ -75,6 +75,16 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
         ref={ref}
         data={data}
         onChange={onChange}
+        // rowHeaderWidth={150}
+        columnHeaderHeight={25}
+        defaultColWidth={150}
+        defaultRowHeight={20}
+        defaultFontSize={10}
+        showToolbar={false}
+        showFormulaBar={false}
+        showSheetTabs={false}
+        addRows={0}
+        forceCalculation={false}
         cellEditable={(row, column) => {
           // 只允许编辑第0行第0列
           // return row === 0 && column === 0;
