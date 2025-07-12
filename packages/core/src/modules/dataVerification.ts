@@ -151,15 +151,23 @@ export function validateIdCard(ctx: Context, idCard: string) {
   return false;
 }
 
+// // 方法二：正则表达式查找
+// function escapeRegex(str: string): string {
+//   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// }
+// function testRegex(raw: string, target: string): boolean {
+//   const regex = new RegExp(`(?:^|,)${escapeRegex(target)}(?:,|$)`);
+//   return regex.test(raw);
+// }
+
 // 数据验证
 export function validateCellData(ctx: Context, item: any, cellValue: any) {
   let { value1, value2 } = item;
   const { type, type2 } = item;
   if (type === "dropdown") {
-    // const list = getDropdownList(ctx, value1);
-    //
-    // // 多选的情况 检查每个都在下拉列表中
+    // 多选的情况 检查每个都在下拉列表中
     // if (type2 && cellValue) {
+    //   const list = getDropdownList(ctx, value1);
     //   return cellValue
     //     .toString()
     //     .split(",")
@@ -167,16 +175,11 @@ export function validateCellData(ctx: Context, item: any, cellValue: any) {
     //       return list.indexOf(i) !== -1;
     //     });
     // }
-    //
-    // let result = false;
-    //
-    // for (let i = 0; i < list.length; i += 1) {
-    //   if (list[i] === cellValue) {
-    //     result = true;
-    //     break;
-    //   }
-    // }
 
+    // console.time("testRegex");
+    // const result = testRegex(value2, cellValue);
+    // console.timeEnd("testRegex");
+    // return result;
     return true;
   }
   if (type === "checkbox") {

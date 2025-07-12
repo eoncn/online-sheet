@@ -77,28 +77,32 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
         onChange={onChange}
         cellEditable={(row, column) => {
           // 只允许编辑第0行第0列
-          return row === 0 && column === 0;
-          // return true;
+          // return row === 0 && column === 0;
+          return true;
         }}
         beforeDeleteRow={() => {
           return Promise.resolve(false);
         }}
         selectClick={(row, column) => {
           console.log("selectClick", row, column);
-          const ret: { lable: string; value: string }[] = [];
-          for (let i = 0; i < 25000; i = i + 1) {
-            ret.push({
-              label: `这是一个测试数据${i}`,
-              value: `option-${i}`,
+          if (row === 1) {
+            console.log("selectClick", row, column);
+            const ret: { lable: string; value: string }[] = [];
+            for (let i = 0; i < 25000; i = i + 1) {
+              ret.push({
+                label: `这是一个测试数据${i}`,
+                value: `option-${i}`,
+              });
+            }
+            // 显示loading状态
+            // 模拟异步请求
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(ret);
+              }, 0);
             });
           }
-          // 显示loading状态
-          // 模拟异步请求
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(ret);
-            }, 0);
-          });
+          return Promise.resolve([]);
         }}
       />
     </ApiExecContainer>

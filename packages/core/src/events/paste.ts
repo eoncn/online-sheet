@@ -2024,7 +2024,8 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
         }
 
         ctx.luckysheet_selection_range = [];
-        pasteHandler(ctx, data, borderInfo);
+        pasteHandler(ctx, data, {});
+        // pasteHandler(ctx, data, borderInfo);
         // $("#fortune-copy-content").empty();
         ele.remove();
       }

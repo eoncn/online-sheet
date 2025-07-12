@@ -16,7 +16,7 @@
     "publish1": "npm publish --registry 'https://registry.npmjs.org' --access public"
   },
   "dependencies": {
-    "@jadinec/core-sheet": "^1.1.21",
+    "@jadinec/core-sheet": "^1.1.22",
     "@types/regenerator-runtime": "^0.13.6",
     "antd": "4.16.13",
     "immer": "^9.0.12",
