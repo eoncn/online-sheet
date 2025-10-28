@@ -954,7 +954,6 @@ export function handleGlobalKeyDown(
       (e.ctrlKey && kcode === 118)
     ) {
       if (!allowEdit) return;
-      console.log("handleGlobalKeyDown", kcode, kstr);
       if (
         String.fromCharCode(kcode) != null &&
         !_.isEmpty(ctx.luckysheet_select_save) && // $("#luckysheet-cell-selected").is(":visible") &&
