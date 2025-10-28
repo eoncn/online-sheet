@@ -119,6 +119,7 @@ const DropDownList: React.FC<IDropDownListProps> = (
             value: item,
           };
         })}
+        listHeight={120}
         mode={isMul ? "multiple" : undefined}
         open={open}
         size="small"

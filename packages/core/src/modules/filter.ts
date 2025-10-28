@@ -129,8 +129,8 @@ export function createFilterOptions(
   // $(`#luckysheet-filter-selected-sheet${ctx.currentSheetIndex}`).remove();
   // $(`#luckysheet-filter-options-sheet${ctx.currentSheetIndex}`).remove();
   // eslint-disable-next-line no-undef
-  const allowEdit = isAllowEdit(ctx);
-  if (!allowEdit) return;
+  // const allowEdit = isAllowEdit(ctx);
+  // if (!allowEdit) return;
   if (sheetId != null && sheetId !== ctx.currentSheetId) return;
   const sheetIndex = getSheetIndex(ctx, ctx.currentSheetId);
   if (sheetIndex == null) return;
@@ -184,8 +184,8 @@ export function createFilterOptions(
 }
 
 export function clearFilter(ctx: Context) {
-  const allowEdit = isAllowEdit(ctx);
-  if (!allowEdit) return;
+  // const allowEdit = isAllowEdit(ctx);
+  // if (!allowEdit) return;
   const sheetIndex = getSheetIndex(ctx, ctx.currentSheetId);
   const hiddenRows = _.reduce(
     ctx.filter,
