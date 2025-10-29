@@ -232,6 +232,10 @@ export type Context = {
   cellEditable?: (row: number, column: number) => boolean;
   // 删除行前要求的回调事件
   beforeDeleteRow?: (beginRow: number, endRow: number) => Promise<boolean>;
+  // 是否为选择框可以直接输入,true表示是选择框可以直接输入,false表示选择框不可以直接输入
+  isSelectInput?: boolean;
+  // 校验函数(输入中校验消耗太多性能，提价前校验)，返回true表示校验通过，false表示校验不通过
+  validate?: () => Promise<boolean>;
 };
 
 export function defaultContext(refs: RefValues): Context {

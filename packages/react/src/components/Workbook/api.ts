@@ -378,5 +378,15 @@ export function generateAPIs(
         });
       });
     },
+
+    validate: (): Promise<{ success: boolean; message: string }> => {
+      return new Promise((resolve) => {
+        setContext((draftCtx) => {
+          api.validate(draftCtx).then((res) => {
+            resolve(res);
+          });
+        });
+      });
+    },
   };
 }

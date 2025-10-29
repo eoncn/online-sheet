@@ -163,7 +163,7 @@ const data = {
     },
     "1_0": {
       type: "dropdown",
-      type2: "true",
+      type2: "",
       rangeTxt: "B1",
       value1: "a,b,c,d",
       value2: "",
@@ -214,11 +214,11 @@ const data = {
       checked: false,
     },
   },
-  frozen: {
-    type: "row",
-    range: {
-      row_focus: 0,
-    },
-  },
+  // frozen: {
+  //   type: "row",
+  //   range: {
+  //     row_focus: 0,
+  //   },
+  // },
 };
 export default data;

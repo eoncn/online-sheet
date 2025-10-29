@@ -151,6 +151,59 @@ export function validateIdCard(ctx: Context, idCard: string) {
   return false;
 }
 
+/**
+ * 检查单元格是否设置了下拉列表验证
+ * @param ctx 上下文
+ * @param r 行索引
+ * @param c 列索引
+ * @returns 如果是下拉验证返回验证配置项，否则返回 null
+ */
+export function getDropdownValidation(ctx: Context, r: number, c: number) {
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  const { dataVerification } = ctx.luckysheetfile[index];
+  if (!dataVerification) return null;
+
+  const item = dataVerification[`${r}_${c}`];
+  if (item && item.type === "dropdown") {
+    return item;
+  }
+  return null;
+}
+
+/**
+ * 验证输入值是否在下拉列表中
+ * @param ctx 上下文
+ * @param r 行索引
+ * @param c 列索引
+ * @param inputValue 输入值
+ * @returns 如果值有效返回 true，否则返回 false
+ */
+export function validateDropdownInput(
+  ctx: Context,
+  r: number,
+  c: number,
+  inputValue: any
+) {
+  const validationItem = getDropdownValidation(ctx, r, c);
+  if (!validationItem) return true; // 如果没有下拉验证，允许任何输入
+
+  const list = getDropdownList(ctx, validationItem.value1);
+  const { type2 } = validationItem;
+
+  // 多选的情况，检查每个值都在下拉列表中
+  if (type2 && inputValue) {
+    return inputValue
+      .toString()
+      .split(",")
+      .every((i: any) => {
+        return list.indexOf(i) !== -1;
+      });
+  }
+
+  // 单选的情况，检查值是否在下拉列表中
+  return list.indexOf(inputValue) !== -1;
+}
+
 // // 方法二：正则表达式查找
 // function escapeRegex(str: string): string {
 //   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

@@ -65,6 +65,7 @@ type AdditionalProps = {
   ) => Promise<{ label: string; value: string }[]>;
   cellEditable?: (row: number, column: number) => boolean;
   beforeDeleteRow?: (beginRow: number, endRow: number) => Promise<boolean>;
+  isSelectInput?: boolean; // 是否为选择框可以直接输入,true表示是选择框可以直接输入,false表示选择框不可以直接输入
 };
 
 const triggerGroupValuesRefresh = (ctx: Context) => {
@@ -90,6 +91,7 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
       cellEditable,
       data: originalData,
       beforeDeleteRow,
+      isSelectInput,
       ...props
     },
     ref
@@ -482,6 +484,20 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
         });
       }
     }, [cellEditable, setContextWithProduce]);
+
+    useEffect(() => {
+      if (beforeDeleteRow) {
+        setContextWithProduce((draftCtx) => {
+          draftCtx.beforeDeleteRow = beforeDeleteRow;
+        });
+      }
+    }, [beforeDeleteRow, setContextWithProduce]);
+
+    useEffect(() => {
+      setContextWithProduce((draftCtx) => {
+        draftCtx.isSelectInput = isSelectInput;
+      });
+    }, [isSelectInput, setContextWithProduce]);
 
     useEffect(() => {
       if (beforeDeleteRow) {

@@ -16,6 +16,7 @@ import {
   escapeHTMLTag,
   isAllowEdit,
   getrangeseleciton,
+  getDropdownValidation,
 } from "@jadinec/core-sheet";
 import React, {
   useContext,
@@ -403,10 +404,18 @@ const InputBox: React.FC = () => {
   const rowReadOnly: Record<number, number> = cfg.rowReadOnly || {};
   const colReadOnly: Record<number, number> = cfg.colReadOnly || {};
 
+  // 获取是否下拉单选列表
+  const isSelectCell = useMemo((): boolean => {
+    return getDropdownValidation(context, row_index, col_index) !== null;
+  }, [context, row_index, col_index]);
+
+  // 是否允许编辑
   const edit = !(
     (colReadOnly[col_index] || rowReadOnly[row_index]) &&
     context.allowEdit === true
   );
+
+  const { isSelectInput = true } = context;
 
   return (
     <div
@@ -453,7 +462,9 @@ const InputBox: React.FC = () => {
           onChange={onChange}
           onKeyDown={onKeyDown}
           onPaste={onPaste}
-          allowEdit={edit ? !isHidenRC : edit}
+          allowEdit={
+            edit ? !isHidenRC && (!isSelectCell || isSelectInput) : edit // 下拉框，单选列表不允许输入时，不能编辑
+          }
         />
       </div>
       {document.activeElement === inputRef.current && (

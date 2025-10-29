@@ -56,19 +56,9 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
   return (
     <ApiExecContainer
       onRun={() => {
-        ref.current?.setCellOptions(1, 0, [
-          { label: "v1", value: "fortune1" },
-          { label: "m2", value: "fortune2" },
-          { label: "bg", value: "green3" },
-          { label: "ct", value: "123444" },
-          { label: "qp", value: "fortune5" },
-          { label: "spl", value: "fortune6" },
-          { label: "lo", value: "fortune7" },
-          { label: "rt", value: "fortune8" },
-          { label: "ps", value: "fortune9" },
-          { label: "hl", value: "fortune10" },
-          { label: "2", value: "33333" },
-        ]);
+        ref.current?.validate().then((res) => {
+          console.log("validate result:", res);
+        });
       }}
     >
       <Workbook
@@ -85,6 +75,7 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
         showSheetTabs={false}
         addRows={0}
         forceCalculation={false}
+        isSelectInput
         cellEditable={(row, column) => {
           // 只允许编辑第0行第0列
           // return row === 0 && column === 0;
@@ -97,8 +88,8 @@ export const GetCellValue: StoryFn<typeof Workbook> = () => {
           console.log("selectClick", row, column);
           if (row === 1) {
             console.log("selectClick", row, column);
-            const ret: { lable: string; value: string }[] = [];
-            for (let i = 0; i < 25000; i = i + 1) {
+            const ret: { label: string; value: string }[] = [];
+            for (let i = 0; i < 25000; i += 1) {
               ret.push({
                 label: `这是一个测试数据${i}`,
                 value: `option-${i}`,
