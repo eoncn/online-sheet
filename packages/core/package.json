@@ -1,6 +1,6 @@
 {
   "name": "@jadinec/core-sheet",
-  "version": "1.1.30",
+  "version": "1.1.100",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx,.json ./src",
     "version1": "yarn version --patch",
-    "build": "father-build",
+    "build": "rimraf dist && father-build",
     "publish1": "npm publish --registry 'https://registry.npmjs.org' --access public"
   },
   "dependencies": {
@@ -26,7 +26,8 @@
   "devDependencies": {
     "@types/lodash": "^4.14.179",
     "@types/numeral": "^2.0.2",
-    "@types/uuid": "^8.3.4"
+    "@types/uuid": "^8.3.4",
+    "rimraf": "^3.0.2"
   },
   "keywords": [
     "spreadsheet",
