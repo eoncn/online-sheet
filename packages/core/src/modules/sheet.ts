@@ -192,8 +192,10 @@ export function deleteSheet(ctx: Context, id: string) {
 
 export function updateSheet(ctx: Context, newData: Sheet[]) {
   newData.forEach((newDatum) => {
-    const { data, row, column } = newDatum;
-    const index = getSheetIndex(ctx, newDatum.id!) as number;
+    // Create a deep copy to avoid read-only property error in immer's produce environment
+    const datumCopy = _.cloneDeep(newDatum);
+    const { data, row, column } = datumCopy;
+    const index = getSheetIndex(ctx, datumCopy.id!) as number;
     if (data != null) {
       // If row and column exist, compare row and column with data. If row and column do not exist, compare data with default.
       let lastRowNum = data.length;
@@ -211,22 +213,22 @@ export function updateSheet(ctx: Context, newData: Sheet[]) {
       for (let i = 0; i < data.length; i += 1) {
         for (let j = 0; j < data[i].length; j += 1) {
           expandedData[i][j] = data[i][j];
-          setFormulaCellInfo(ctx, { r: i, c: j, id: newDatum.id! }, data);
+          setFormulaCellInfo(ctx, { r: i, c: j, id: datumCopy.id! }, data);
         }
       }
-      newDatum.data = expandedData;
+      datumCopy.data = expandedData;
       if (ctx.luckysheetfile[index] == null) {
-        ctx.luckysheetfile.push(newDatum);
+        ctx.luckysheetfile.push(datumCopy);
       } else {
-        ctx.luckysheetfile[index] = newDatum;
+        ctx.luckysheetfile[index] = datumCopy;
       }
-    } else if (newDatum.celldata != null) {
-      initSheetData(ctx, index, newDatum);
-      const _index = getSheetIndex(ctx, newDatum.id!) as number;
-      newDatum.celldata?.forEach((d) => {
+    } else if (datumCopy.celldata != null) {
+      initSheetData(ctx, index, datumCopy);
+      const _index = getSheetIndex(ctx, datumCopy.id!) as number;
+      datumCopy.celldata?.forEach((d) => {
         setFormulaCellInfo(
           ctx,
-          { r: d.r, c: d.c, id: newDatum.id! },
+          { r: d.r, c: d.c, id: datumCopy.id! },
           ctx.luckysheetfile[_index].data
         );
       });
