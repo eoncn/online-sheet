@@ -31,13 +31,12 @@ export function setCellOptions(
   const verification = sheet.dataVerification;
   // const { dataVerification: verification } = ctx.luckysheetfile[i];
   const cellItem = verification[`${row}_${column}`];
-  cellItem.value1 = list.map((child) => child.label).join(",");
-  try {
-    cellItem.value2 = JSON.stringify(list);
-  } catch (e) {
-    console.error("JSON.stringify error", e);
-    cellItem.value2 = "[]";
-  }
+  // Create a new object to replace the read-only cellItem
+  verification[`${row}_${column}`] = {
+    ...cellItem,
+    value1: list.map((child) => child.label).join(","),
+    value2: JSON.stringify(list),
+  };
 }
 
 export function getCellValue(
